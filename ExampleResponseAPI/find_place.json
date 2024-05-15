@@ -1,0 +1,112 @@
+[
+    {
+        "name": "Tomsk",
+        "place_id": "tomsk",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": "Tomskiy Rayon",
+        "country": "Russia",
+        "lat": "56.49771N",
+        "lon": "84.97437E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    },
+    {
+        "name": "Tomsk Oblast",
+        "place_id": "tomsk-oblast",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "58.5N",
+        "lon": "82.5E",
+        "timezone": "Asia/Krasnoyarsk",
+        "type": "administrative_area"
+    },
+    {
+        "name": "Seversk",
+        "place_id": "seversk",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "56.60056N",
+        "lon": "84.88639E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    },
+    {
+        "name": "Asino",
+        "place_id": "asino",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "56.99987N",
+        "lon": "86.14393E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    },
+    {
+        "name": "Strezhevoy",
+        "place_id": "strezhevoy",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "60.7333N",
+        "lon": "77.5889E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    },
+    {
+        "name": "Kolpashevo",
+        "place_id": "kolpashevo",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "58.31306N",
+        "lon": "82.90889E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    },
+    {
+        "name": "Mel'nikovo",
+        "place_id": "melnikovo",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "56.55738N",
+        "lon": "84.0835E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    },
+    {
+        "name": "Kargasok",
+        "place_id": "kargasok",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "59.05556N",
+        "lon": "80.85722E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    },
+    {
+        "name": "Togur",
+        "place_id": "togur",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "58.3631N",
+        "lon": "82.8265E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    },
+    {
+        "name": "Belyy Yar",
+        "place_id": "belyy-yar-1510370",
+        "adm_area1": "Tomsk Oblast",
+        "adm_area2": null,
+        "country": "Russia",
+        "lat": "58.44472N",
+        "lon": "85.0425E",
+        "timezone": "Asia/Tomsk",
+        "type": "settlement"
+    }
+]
