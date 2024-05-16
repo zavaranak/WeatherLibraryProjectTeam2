@@ -1,0 +1,2 @@
+public class WindSpeed {
+}
