@@ -1,31 +1,51 @@
-import java.util.Scanner;
 import java.io.IOException;
-
+import java.time.LocalDate;
+import java.util.Scanner;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WeatherLibrary {
     public static void main(String[] args) {
-        Temperature temperature = new Temperature();
+        WeatherDataFetcher dataFetcher = null; // Generic WeatherDataFetcher reference
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter place name:"); // Prompt for place name
         String placeName = scanner.nextLine();
 
-        System.out.println("Enter hour (0-23):"); // Prompt for hour
-        int hour = scanner.nextInt();
-
         try {
             // Find place ID
-            String placeIdResponse = temperature.findPlaceId(placeName);
+            String placeIdResponse = new Temperature().findPlaceId(placeName);
             String placeId = parsePlaceIdFromResponse(placeIdResponse);
             if (placeId == null) {
-                System.out.println("Place ID not found,Please check if the place name is correct"); // Place ID not found
+                System.out.println("Place ID not found, please check if the place name is correct."); // Place ID not found
                 return;
             }
 
-            // Get temperature data
-            String temperatureData = temperature.getTemperatureByHour(placeId, hour);
-            System.out.println("Temperature:"); // Temperature data
-            System.out.println(temperatureData);
+            System.out.println("Choose an option:");
+            System.out.println("1. Get temperature by hour");
+            System.out.println("2. Get temperature by date");
+            System.out.println("3. Get wind speed by hour");
+            System.out.println("4. Get wind speed by date");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                case 2:
+                    dataFetcher = new Temperature(); // Temperature data
+                    break;
+                case 3:
+                case 4:
+                    dataFetcher = new WindSpeed(); // Wind speed data
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+                    return;
+            }
+
+            if (dataFetcher != null) {
+                handleDataFetching(dataFetcher, placeId, scanner, choice);
+            }
         } catch (IOException e) {
             System.err.println("IO exception occurred while processing the request.");
             e.printStackTrace();
@@ -35,17 +55,81 @@ public class WeatherLibrary {
         } catch (Exception e) {
             System.err.println("An unexpected error occurred.");
             e.printStackTrace();
+        } finally {
+            scanner.close();
         }
     }
 
     // Parse place ID from the response (assuming the JSON format: [{"place_id":"12345"}])
     private static String parsePlaceIdFromResponse(String response) {
-        String key = "\"place_id\":\"";
-        int startIndex = response.indexOf(key) + key.length();
-        if (startIndex == -1 + key.length()) { // -1 means not found
+        try {
+            JsonNode root = new ObjectMapper().readTree(response);
+            return root.get(0).path("place_id").asText();
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
-        int endIndex = response.indexOf("\"", startIndex);
-        return response.substring(startIndex, endIndex);
+    }
+
+    // Method to handle data fetching based on user choice
+    private static void handleDataFetching(WeatherDataFetcher dataFetcher, String placeId, Scanner scanner, int choice) throws IOException, InterruptedException {
+        LocalDate date;
+        int hour;
+        String data;
+
+        switch (choice) {
+            case 1:
+                System.out.println("Enter hour (0-23):"); // Prompt for hour
+                hour = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+
+                // Get temperature data for hour
+                data = dataFetcher.getWeatherDataByEndpoint(placeId, "hourly");
+                // Debugging output
+                System.out.println("Response data: " + data);
+                String temperatureHourlyData = dataFetcher.parseDataFromResponseByHour(data, LocalDate.now(), hour); // Ensure it uses today's date
+                System.out.println("Temperature by hour:"); // Temperature by hour
+                System.out.println(temperatureHourlyData);
+                break;
+            case 2:
+                System.out.println("Enter date (YYYY-MM-DD):"); // Prompt for date
+                date = LocalDate.parse(scanner.nextLine());
+
+                // Get temperature data for date
+                data = dataFetcher.getWeatherDataByEndpoint(placeId, "daily");
+                // Debugging output
+                System.out.println("Response data: " + data);
+                String temperatureDailyData = dataFetcher.parseDataFromResponseByDate(data, date);
+                System.out.println("Temperature by date:"); // Temperature by date
+                System.out.println(temperatureDailyData);
+                break;
+            case 3:
+                System.out.println("Enter hour (0-23):"); // Prompt for hour
+                hour = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+
+                // Get wind speed data for hour
+                data = dataFetcher.getWeatherDataByEndpoint(placeId, "hourly");
+                // Debugging output
+                System.out.println("Response data: " + data);
+                String windSpeedHourlyData = dataFetcher.parseDataFromResponseByHour(data, LocalDate.now(), hour); // Ensure it uses today's date
+                System.out.println("Wind Speed by hour:"); // Wind Speed by hour
+                System.out.println(windSpeedHourlyData);
+                break;
+            case 4:
+                System.out.println("Enter date (YYYY-MM-DD):"); // Prompt for date
+                date = LocalDate.parse(scanner.nextLine());
+
+                // Get wind speed data for date
+                data = dataFetcher.getWeatherDataByEndpoint(placeId, "daily");
+                // Debugging output
+                System.out.println("Response data: " + data);
+                String windSpeedDailyData = dataFetcher.parseDataFromResponseByDate(data, date);
+                System.out.println("Wind Speed by date:"); // Wind Speed by date
+                System.out.println(windSpeedDailyData);
+                break;
+            default:
+                System.out.println("Invalid choice.");
+        }
     }
 }
