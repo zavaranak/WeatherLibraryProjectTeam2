@@ -8,13 +8,13 @@ public class WeatherLibrary {
     public static void main(String[] args) {
         WeatherDataFetcher dataFetcher = null; // Generic WeatherDataFetcher reference
         Scanner scanner = new Scanner(System.in);
-
+        String apiKey="76a78c27c4msh9aea75e4855a1fbp1f5295jsndcc59ebb7371";
         System.out.println("Enter place name:"); // Prompt for place name
         String placeName = scanner.nextLine();
 
         try {
             // Find place ID
-            String placeIdResponse = new Temperature().findPlaceId(placeName);
+            String placeIdResponse = new Temperature(apiKey).findPlaceId(placeName);
             String placeId = parsePlaceIdFromResponse(placeIdResponse);
             if (placeId == null) {
                 System.out.println("Place ID not found, please check if the place name is correct."); // Place ID not found
@@ -28,21 +28,28 @@ public class WeatherLibrary {
             System.out.println("4. Get wind speed by date");
             System.out.println("5. Get cloud_cover by hour");
             System.out.println("6. Get cloud_cover by date");
+            System.out.println("7. Get weatherInfo by hour");
+            System.out.println("8. Get weatherInfo by date");
+
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
 
             switch (choice) {
                 case 1:
                 case 2:
-                    dataFetcher = new Temperature(); // Temperature data
+                    dataFetcher = new Temperature(apiKey); // Temperature data
                     break;
                 case 3:
                 case 4:
-                    dataFetcher = new WindSpeed(); // Wind speed data
+                    dataFetcher = new WindSpeed(apiKey); // Wind speed data
                     break;
                 case 5:
                 case 6:
-                    dataFetcher = new CloudState();//cloud_cover data
+                    dataFetcher = new CloudState(apiKey);//cloud_cover data
+                    break;
+                case 7:
+                case 8:
+                    dataFetcher = new WeatherInfo(apiKey);//weatherInfo data
                     break;
                 default:
                     System.out.println("Invalid choice.");
@@ -158,6 +165,31 @@ public class WeatherLibrary {
                 String cloudCoverDailyData = dataFetcher.parseDataFromResponseByDate(data, date);
                 System.out.println("CloudCover by date:"); // Cloud cover by date
                 System.out.println(cloudCoverDailyData);
+                break;
+            case 7:
+                System.out.println("Enter hour (0-23):"); // Prompt for hour
+                hour = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+
+                // Get weatherInfo data for hour
+                data = dataFetcher.getWeatherDataByEndpoint(placeId, "hourly");
+                // Debugging output
+                System.out.println("Response data: " + data);
+                String weatherInfoHourlyData = dataFetcher.parseDataFromResponseByHour(data, LocalDate.now(), hour);
+                System.out.println("weatherInfo  by hour:"); // weatherInfo  by hour
+                System.out.println(weatherInfoHourlyData);
+                break;
+            case 8:
+                System.out.println("Enter date (YYYY-MM-DD):"); // Prompt for date
+                date = LocalDate.parse(scanner.nextLine());
+
+                // Get  weatherInfo data for date
+                data = dataFetcher.getWeatherDataByEndpoint(placeId, "daily");
+                // Debugging output
+                System.out.println("Response data: " + data);
+                String weatherInfoDailyData = dataFetcher.parseDataFromResponseByDate(data, date);
+                System.out.println(" weatherInfo by date:"); //  weatherInfo by date
+                System.out.println(weatherInfoDailyData);
                 break;
             default:
                 System.out.println("Invalid choice.");

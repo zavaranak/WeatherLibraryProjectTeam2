@@ -4,15 +4,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class WeatherDataFetcher {
-    private static final String API_KEY = "d54a8e746bmsh53d2bac8cd80d71p18cd5djsne88d1b12ec3e";
+    private final String apiKey;
     private static final String API_HOST = "ai-weather-by-meteosource.p.rapidapi.com";
     private static final HttpClient client = HttpClient.newHttpClient();
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();public WeatherDataFetcher(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
 
     // Find place ID by place name
     public String findPlaceId(String placeName) throws IOException, InterruptedException {
@@ -34,7 +35,7 @@ public abstract class WeatherDataFetcher {
     private HttpRequest buildRequest(String url) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header("X-RapidAPI-Key", API_KEY)
+                .header("X-RapidAPI-Key", this.apiKey)
                 .header("X-RapidAPI-Host", API_HOST)
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
