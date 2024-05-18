@@ -1,0 +1,5 @@
+com\example\weather\Temperature.class
+com\example\weather\CloudState.class
+com\example\weather\WeatherInfo.class
+com\example\weather\WindSpeed.class
+com\example\weather\WeatherDataFetcher.class
