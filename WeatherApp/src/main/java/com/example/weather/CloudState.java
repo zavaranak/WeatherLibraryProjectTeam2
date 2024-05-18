@@ -1,8 +1,11 @@
+package com.example.weather;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CloudState extends WeatherDataFetcher {
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -10,12 +13,12 @@ public class CloudState extends WeatherDataFetcher {
         super(apiKey);
     }
     @Override
-    protected String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {
+    public String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {
         JsonNode root = mapper.readTree(response);
         JsonNode hourlyData = root.path("hourly").path("data");
 
-        // Debugging output
-        System.out.println("Hourly Data: " + hourlyData.toString());
+//        // Debugging output
+//        System.out.println("Hourly Data: " + hourlyData.toString());
 
         if (hourlyData.isMissingNode()) {
             return "No hourly field in data";
@@ -38,12 +41,12 @@ public class CloudState extends WeatherDataFetcher {
     }
 
     @Override
-    protected String parseDataFromResponseByDate(String response, LocalDate date) throws IOException {
+    public String parseDataFromResponseByDate(String response, LocalDate date) throws IOException {
         JsonNode root = mapper.readTree(response);
         JsonNode dailyData = root.path("daily").path("data");
 
-        // Debugging output
-        System.out.println("Daily Data: " + dailyData.toString());
+//        // Debugging output
+//        System.out.println("Daily Data: " + dailyData.toString());
 
         if (dailyData.isMissingNode()) {
             return "No daily field in data";

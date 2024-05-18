@@ -1,21 +1,24 @@
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+package com.example.weather;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class CloudState extends WeatherDataFetcher {
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Temperature extends WeatherDataFetcher {
     private static final ObjectMapper mapper = new ObjectMapper();
-    public CloudState(String apiKey) {
+    public Temperature(String apiKey) {
         super(apiKey);
     }
     @Override
-    protected String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {
+    public String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {
         JsonNode root = mapper.readTree(response);
         JsonNode hourlyData = root.path("hourly").path("data");
 
-        // Debugging output
-        System.out.println("Hourly Data: " + hourlyData.toString());
+//        // Debugging output
+//        System.out.println("Hourly Data: " + hourlyData.toString());
 
         if (hourlyData.isMissingNode()) {
             return "No hourly field in data";
@@ -27,23 +30,21 @@ public class CloudState extends WeatherDataFetcher {
         for (JsonNode hourData : hourlyData) {
             String dataDate = hourData.path("date").asText();
             if (dataDate.equals(hourString)) {
-                JsonNode cloudNode = hourData.path("cloud_cover");
-                if (cloudNode.isMissingNode()) {
-                    return "No wind cloud_cover available";
+                JsonNode temperatureNode = hourData.path("temperature");
+                if (temperatureNode.isMissingNode()) {
+                    return "No temperature data available";
                 }
-                return cloudNode.asText() ;
+                return temperatureNode.asText() + " ℃";
             }
         }
         return "No data for the specified hour: " + hour;
     }
 
     @Override
-    protected String parseDataFromResponseByDate(String response, LocalDate date) throws IOException {
+    // Method to parse average temperature data from response by date
+    public String parseDataFromResponseByDate(String response, LocalDate date) throws IOException {
         JsonNode root = mapper.readTree(response);
         JsonNode dailyData = root.path("daily").path("data");
-
-        // Debugging output
-        System.out.println("Daily Data: " + dailyData.toString());
 
         if (dailyData.isMissingNode()) {
             return "No daily field in data";
@@ -54,13 +55,13 @@ public class CloudState extends WeatherDataFetcher {
         for (JsonNode dayData : dailyData) {
             String dataDate = dayData.path("day").asText();
             if (dataDate.equals(dateString)) {
-                JsonNode cloudNode = dayData.path("cloud_cover");
-                if (cloudNode.isMissingNode()) {
-                    return "No cloud_cover data available";
-                }
-                return cloudNode.asText() ;
+                double temperatureMin = dayData.path("temperature_min").asDouble();
+                double temperatureMax = dayData.path("temperature_max").asDouble();
+                double averageTemperature = (temperatureMin + temperatureMax) / 2.0;
+                return   averageTemperature + " °C";
             }
         }
+
         return "No data for the specified date: " + dateString;
     }
 }

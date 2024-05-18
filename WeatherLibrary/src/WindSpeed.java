@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WindSpeed extends WeatherDataFetcher {
     private static final ObjectMapper mapper = new ObjectMapper();
+    public WindSpeed(String apiKey){
+        super(apiKey);
+    }
 
     @Override
     protected String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {

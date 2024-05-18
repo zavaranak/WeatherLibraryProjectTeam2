@@ -1,12 +1,14 @@
+package com.example.weather;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class WeatherDataFetcher {
     private final String apiKey;
@@ -16,15 +18,7 @@ public abstract class WeatherDataFetcher {
         this.apiKey = apiKey;
     }
 
-
-    // Find place ID by place name
-    public String findPlaceId(String placeName) throws IOException, InterruptedException {
-        String url = "https://ai-weather-by-meteosource.p.rapidapi.com/find_places?text=" + placeName + "&language=en";
-        HttpRequest request = buildRequest(url);
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
-    }
-    private static String parsePlaceIdFromResponse(String response) {
+    public static String parsePlaceIdFromResponse(String response) {
         try {
             JsonNode root = new ObjectMapper().readTree(response);
             return root.get(0).path("place_id").asText();
@@ -33,9 +27,16 @@ public abstract class WeatherDataFetcher {
             return null;
         }
     }
+    // Find place ID by place name
+    public String findPlaceId(String placeName) throws IOException, InterruptedException {
+        String url = "https://ai-weather-by-meteosource.p.rapidapi.com/find_places?text=" + placeName + "&language=en";
+        HttpRequest request = buildRequest(url);
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
 
     // Get weather data by place ID and endpoint (hourly or daily)
-    protected String getWeatherDataByEndpoint(String placeId, String endpoint) throws IOException, InterruptedException {
+    public String getWeatherDataByEndpoint(String placeId, String endpoint) throws IOException, InterruptedException {
         String url = "https://ai-weather-by-meteosource.p.rapidapi.com/" + endpoint + "?place_id=" + placeId + "&timezone=auto&language=en&units=auto";
         HttpRequest request = buildRequest(url);
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -53,8 +54,8 @@ public abstract class WeatherDataFetcher {
     }
 
     // Parse data from the response based on the given date or hour
-    protected abstract String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException;
+    public abstract String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException;
 
     // Parse data from the response based on the given date
-    protected abstract String parseDataFromResponseByDate(String response, LocalDate date) throws IOException;
+    public abstract String parseDataFromResponseByDate(String response, LocalDate date) throws IOException;
 }

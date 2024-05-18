@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Temperature extends WeatherDataFetcher {
     private static final ObjectMapper mapper = new ObjectMapper();
+    public Temperature(String apiKey) {
+        super(apiKey);
+    }
 
     protected String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {
         JsonNode root = mapper.readTree(response);
