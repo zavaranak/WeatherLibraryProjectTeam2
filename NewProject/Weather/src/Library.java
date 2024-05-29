@@ -1,7 +1,7 @@
-//import SubClass.Cloud;
+import SubClass.Cloud;
 import SubClass.Temperature;
 import SubClass.WeatherObject;
-//import SubClass.Wind;
+import SubClass.Wind;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -47,6 +47,49 @@ public class Library {
             return "Error fetching data";
         }
     }
-
+    public String GetCloudByHour(String placeName, LocalDate date, int hour) {
+        try {
+            this.forecaster = new Cloud(apiKey);
+            String placeId = findPlaceId(forecaster, placeName);
+            String response = forecaster.getResponse("https://www.meteosource.com/api/v1/free/point", "place_id", placeId+"&sections=hourly");
+            return forecaster.parseDataFromResponseByHour(response, date, hour);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return "Error fetching data";
+        }
+    }
+    public String GetCloudByDate(String placeName, LocalDate date) {
+        try {
+            this.forecaster = new Cloud(apiKey);
+            String placeId = findPlaceId(forecaster, placeName);
+            String response = forecaster.getResponse("https://www.meteosource.com/api/v1/free/point", "place_id", placeId+"&sections=daily");
+            return forecaster.parseDataFromResponseByDate(response, date);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return "Error fetching data";
+        }
+    }
+    public String GetWindByHour(String placeName, LocalDate date, int hour) {
+        try {
+            this.forecaster = new Wind(apiKey);
+            String placeId = findPlaceId(forecaster, placeName);
+            String response = forecaster.getResponse("https://www.meteosource.com/api/v1/free/point", "place_id", placeId+"&sections=hourly");
+            return forecaster.parseDataFromResponseByHour(response, date, hour);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return "Error fetching data";
+        }
+    }
+    public String GetWindByDate(String placeName, LocalDate date) {
+        try {
+            this.forecaster = new Wind(apiKey);
+            String placeId = findPlaceId(forecaster, placeName);
+            String response = forecaster.getResponse("https://www.meteosource.com/api/v1/free/point", "place_id", placeId+"&sections=daily");
+            return forecaster.parseDataFromResponseByDate(response, date);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return "Error fetching data";
+        }
+    }
     // Similar methods for Cloud and Wind
 }
