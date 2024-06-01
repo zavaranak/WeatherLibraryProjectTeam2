@@ -2,6 +2,9 @@
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar"
+        "lib/**/*.jar",
+        "libs/jackson-annotations-2.17.1.jar",
+        "libs/jackson-core-2.17.1.jar",
+        "libs/jackson-databind-2.17.1.jar"
     ]
 }

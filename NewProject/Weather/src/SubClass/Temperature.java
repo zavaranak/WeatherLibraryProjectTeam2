@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Temperature extends WeatherObject {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    public static final ObjectMapper mapper = new ObjectMapper();
 
     public Temperature(String apiKey) {
         super(apiKey);
@@ -33,7 +33,7 @@ public class Temperature extends WeatherObject {
                 if (temperatureNode.isMissingNode()) {
                     return "No temperature data available";
                 }
-                return temperatureNode.asText() + " °C";
+                return temperatureNode.asText();
             }
         }
         return "No data for the specified hour: " + hour;
@@ -53,8 +53,13 @@ public class Temperature extends WeatherObject {
         for (JsonNode dayData : dailyData) {
             String dataDate = dayData.path("day").asText();
             if (dataDate.equals(dateString)) {
+<<<<<<< HEAD
                 double temperature = dayData.path("all_day").path("temperature").asDouble();
-                return temperature + " °C";
+                return "" + temperature;
+=======
+                JsonNode temperature = dayData.path("all_day").path("temperature");
+                return temperature.asText();
+>>>>>>> e677bec52445aed7f56a5c7bbe00aed61b0b78ee
             }
         }
 

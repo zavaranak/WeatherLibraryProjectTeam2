@@ -31,6 +31,7 @@ public abstract class WeatherObject {
         if (response.statusCode() != 200) {
             throw new IOException("Failed to get data: " + response.body());
         }
+
         return response.body();
     }
 
