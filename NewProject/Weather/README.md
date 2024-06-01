@@ -23,10 +23,11 @@ GetWindByHour(String placeName, LocalDate date, int hour)
 
 
 **Пример:**
-public class App {
-    public static void main(String[] args) {
-        String apiKey = "gyqo0sonhmcyjhlyh2mejjkypn14e38jappjg19h"; // APIKEY
-        Library weatherLibrary = new Library(apiKey);
+
+        public class App {
+            public static void main(String[] args) {
+                String apiKey = "gyqo0sonhmcyjhlyh2mejjkypn14e38jappjg19h"; // APIKEY
+                Library weatherLibrary = new Library(apiKey);
 
         System.out.println("Test Library");
         try {
