@@ -54,8 +54,13 @@ public class Temperature extends WeatherObject {
             String dataDate = dayData.path("day").asText();
             if (dataDate.equals(dateString)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 double temperature = dayData.path("all_day").path("temperature").asDouble();
                 return "" + temperature;
+=======
+                JsonNode temperature = dayData.path("all_day").path("temperature");
+                return temperature.asText();
+>>>>>>> e677bec52445aed7f56a5c7bbe00aed61b0b78ee
 =======
                 JsonNode temperature = dayData.path("all_day").path("temperature");
                 return temperature.asText();
