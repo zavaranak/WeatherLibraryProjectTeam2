@@ -15,7 +15,7 @@ public class Temperature extends WeatherObject {
     }
 
     @Override
-    public String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {
+    public String parseDataFromResponseByHour(String response, LocalDate date, int nexthours) throws IOException {
         JsonNode root = mapper.readTree(response);
         JsonNode hourlyData = root.path("hourly").path("data");
 
@@ -23,20 +23,16 @@ public class Temperature extends WeatherObject {
             return "No hourly field in data";
         }
 
-        String dateString = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String hourString = String.format("%sT%02d:00:00", dateString, hour);
+        JsonNode neededData = hourlyData.get(nexthours - 1);
+        if (neededData.isMissingNode())
+            return "No data for the specified in " + nexthours + "hours";
 
-        for (JsonNode hourData : hourlyData) {
-            String dataDate = hourData.path("date").asText();
-            if (dataDate.equals(hourString)) {
-                JsonNode temperatureNode = hourData.path("temperature");
-                if (temperatureNode.isMissingNode()) {
-                    return "No temperature data available";
-                }
-                return temperatureNode.asText();
-            }
+        JsonNode temperature = neededData.path("temperature");
+        if (temperature.isMissingNode()) {
+            return "No temperature data available";
         }
-        return "No data for the specified hour: " + hour;
+        return temperature.asText();
+
     }
 
     @Override
@@ -53,18 +49,9 @@ public class Temperature extends WeatherObject {
         for (JsonNode dayData : dailyData) {
             String dataDate = dayData.path("day").asText();
             if (dataDate.equals(dateString)) {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 double temperature = dayData.path("all_day").path("temperature").asDouble();
                 return "" + temperature;
-=======
-                JsonNode temperature = dayData.path("all_day").path("temperature");
-                return temperature.asText();
->>>>>>> e677bec52445aed7f56a5c7bbe00aed61b0b78ee
-=======
-                JsonNode temperature = dayData.path("all_day").path("temperature");
-                return temperature.asText();
->>>>>>> e677bec52445aed7f56a5c7bbe00aed61b0b78ee
+
             }
         }
 

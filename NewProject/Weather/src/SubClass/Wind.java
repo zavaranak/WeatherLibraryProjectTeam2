@@ -12,8 +12,34 @@ public class Wind extends WeatherObject {
         super(apiKey);
     }
 
+    // @Override
+    // public String parseDataFromResponseByHour(String response, LocalDate date,
+    // int hour) throws IOException {
+    // JsonNode root = mapper.readTree(response);
+    // JsonNode hourlyData = root.path("hourly").path("data");
+
+    // if (hourlyData.isMissingNode()) {
+    // return "No hourly field in data";
+    // }
+
+    // String dateString = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    // String hourString = String.format("%sT%02d:00:00", dateString, hour);
+
+    // for (JsonNode hourData : hourlyData) {
+    // String dataDate = hourData.path("date").asText();
+    // if (dataDate.equals(hourString)) {
+    // JsonNode windNode = hourData.path("wind").path("speed");
+    // if (windNode.isMissingNode()) {
+    // return "No wind speed data available";
+    // }
+    // return windNode.asText();
+    // }
+    // }
+    // return "No data for the specified hour: " + hour;
+    // }
+
     @Override
-    public String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {
+    public String parseDataFromResponseByHour(String response, LocalDate date, int nexthours) throws IOException {
         JsonNode root = mapper.readTree(response);
         JsonNode hourlyData = root.path("hourly").path("data");
 
@@ -21,20 +47,16 @@ public class Wind extends WeatherObject {
             return "No hourly field in data";
         }
 
-        String dateString = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String hourString = String.format("%sT%02d:00:00", dateString, hour);
+        JsonNode neededData = hourlyData.get(nexthours - 1);
+        if (neededData.isMissingNode())
+            return "No data for the specified in " + nexthours + "hours";
 
-        for (JsonNode hourData : hourlyData) {
-            String dataDate = hourData.path("date").asText();
-            if (dataDate.equals(hourString)) {
-                JsonNode windNode = hourData.path("wind").path("speed");
-                if (windNode.isMissingNode()) {
-                    return "No wind speed data available";
-                }
-                return windNode.asText() ;
-            }
+        JsonNode wind = neededData.path("wind").path("speed");
+        if (wind.isMissingNode()) {
+            return "No wind data available";
         }
-        return "No data for the specified hour: " + hour;
+        return wind.asText();
+
     }
 
     @Override
@@ -55,7 +77,7 @@ public class Wind extends WeatherObject {
                 if (windNode.isMissingNode()) {
                     return "No wind speed data available";
                 }
-                return windNode.asText() ;
+                return windNode.asText();
             }
         }
         return "No data for the specified date: " + dateString;

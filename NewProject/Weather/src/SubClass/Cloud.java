@@ -13,7 +13,7 @@ public class Cloud extends WeatherObject {
     }
 
     @Override
-    public String parseDataFromResponseByHour(String response, LocalDate date, int hour) throws IOException {
+    public String parseDataFromResponseByHour(String response, LocalDate date, int nexthours) throws IOException {
         JsonNode root = mapper.readTree(response);
         JsonNode hourlyData = root.path("hourly").path("data");
 
@@ -21,20 +21,16 @@ public class Cloud extends WeatherObject {
             return "No hourly field in data";
         }
 
-        String dateString = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String hourString = String.format("%sT%02d:00:00", dateString, hour);
+        JsonNode neededData = hourlyData.get(nexthours - 1);
+        if (neededData.isMissingNode())
+            return "No data for the specified in " + nexthours + "hours";
 
-        for (JsonNode hourData : hourlyData) {
-            String dataDate = hourData.path("date").asText();
-            if (dataDate.equals(hourString)) {
-                JsonNode cloudNode = hourData.path("cloud_cover").path("total");
-                if (cloudNode.isMissingNode()) {
-                    return "No cloud_cover data available";
-                }
-                return cloudNode.asText();
-            }
+        JsonNode cloud = neededData.path("cloud_cover").path("total");
+        if (cloud.isMissingNode()) {
+            return "No cloud data available";
         }
-        return "No data for the specified hour: " + hour;
+        return cloud.asText();
+
     }
 
     @Override

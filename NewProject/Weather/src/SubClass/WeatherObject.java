@@ -18,14 +18,15 @@ public abstract class WeatherObject {
     protected HttpRequest buildRequest(String url, String queryParameter, String value) {
 
         String fullUrl = url + "?" + queryParameter + "=" + value + "&key=" + this.apiKey;
-        System.out.println("Request URL: " + fullUrl); // print URL to test
+        // System.out.println("Request URL: " + fullUrl); // print URL to test
         return HttpRequest.newBuilder()
                 .uri(URI.create(fullUrl))
                 .GET()
                 .build();
     }
 
-    public String getResponse(String url, String queryParameter, String value) throws IOException, InterruptedException {
+    public String getResponse(String url, String queryParameter, String value)
+            throws IOException, InterruptedException {
         HttpRequest request = buildRequest(url, queryParameter, value);
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {

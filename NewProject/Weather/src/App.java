@@ -7,28 +7,26 @@ public class App {
 
         System.out.println("Test Library");
         try {
-            String temperature = weatherLibrary.GetTemperatureByDate("london", LocalDate.of(2024, 6, 1));
-            System.out.println("Daily Temperature : " + temperature);
+            // Temperature
+            String temperature = weatherLibrary.GetTemperatureByDate("tomsk", LocalDate.of(2024, 6, 5));
+            System.out.println("Daily Temperature : " + temperature + " Celcius Degree");
 
-            String hourlyTemperature = weatherLibrary.GetTemperatureByHour("london",
-                    LocalDate.now(), 20);
-            System.out.println("Hourly Temperature " + hourlyTemperature);
+            String hourlyTemperature = weatherLibrary.GetTemperatureByHour("tomsk", LocalDate.now(), 18);
+            System.out.println("Temperature in 10 hours: " + hourlyTemperature + " Celcius Degree");
 
-            // String hourlyCloud = weatherLibrary.GetCloudByHour("Tomsk", LocalDate.now(),
-            // 50);
-            // System.out.println("Hourly Cloud-cover :" + hourlyCloud);
+            // Cloud
+            String cloud = weatherLibrary.GetCloudByDate("Tomsk", LocalDate.of(2024, 6, 2));
+            System.out.println("Daily Cloud-cover : " + cloud + " %");
 
-            // String cloud = weatherLibrary.GetCloudByDate("Tomsk", LocalDate.of(2025, 6,
-            // 1));
-            // System.out.println("Daily Cloud-cover : " + cloud);
+            String hourlyCloud = weatherLibrary.GetCloudByHour("Tomsk", LocalDate.now(), 20);
+            System.out.println("Cloud cover in 20 hours: :" + hourlyCloud + " %");
 
-            // String hourlyWind = weatherLibrary.GetWindByHour("Tomsk", LocalDate.now(),
-            // 53);
-            // System.out.println("Hourly Wind-speed :" + hourlyWind);
+            // Wind
+            String wind = weatherLibrary.GetWindByDate("Tomsk", LocalDate.of(2024, 6, 2));
+            System.out.println("Daily Wind-speed : " + wind + " m/s");
 
-            // String wind = weatherLibrary.GetWindByDate("Tomsk", LocalDate.of(2025, 6,
-            // 1));
-            // System.out.println("Daily Wind-speed : " + wind);
+            String hourlyWind = weatherLibrary.GetWindByHour("Tomsk", LocalDate.now(), 12);
+            System.out.println("Wind speed in 12 hours:" + hourlyWind + " m/s");
 
         } catch (Exception e) {
             e.printStackTrace();
