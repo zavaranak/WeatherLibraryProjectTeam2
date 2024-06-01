@@ -8,18 +8,22 @@
 
 **Список методы из библиотки (Class Library):**
 
-GetTemperatureByDate(String placeName, LocalDate date)
---Возвращает температура по дату (только в течении 7 дней - текущий день и 6 следующих дней) 
-GetTemperatureByHour(String placeName, LocalDate date, int hour)
---Возвращает температура по часам (только в течении 24 часов с текушего часа)
-GetCloudByDate(String placeName, LocalDate date)
---Возращает состояние облака по дату (только в течении 7 дней - текущий день и 6 следующих дней) 
-GetCloudByHour(String placeName, LocalDate date, int hour)
---Возращает состояние облака по дату (только в течении 24 часов с текушего часа)
-GetWindByDate(String placeName, LocalDate date)
---Возращает скорость ветра по дату (только в течении 7 дней - текущий день и 6 следующих дней) 
-GetWindByHour(String placeName, LocalDate date, int hour)
---Возращает скорость ветра по часам (только в течении 24 часов с текушего часа) 
+    GetTemperatureByDate(String placeName, LocalDate date)
+        --Возвращает температура по дату (только в течении 7 дней - текущий день и 6 следующих дней) 
+    
+    GetTemperatureByHour(String placeName, LocalDate date, int hour)
+        --Возвращает температура по часам (только в течении 24 часов с текушего часа)
+    
+    GetCloudByDate(String placeName, LocalDate date)
+        --Возращает состояние облака по дату (только в течении 7 дней - текущий день и 6 следующих дней) 
+    GetCloudByHour(String placeName, LocalDate date, int hour)
+        --Возращает состояние облака по дату (только в течении 24 часов с текушего часа)
+        
+    GetWindByDate(String placeName, LocalDate date)
+        --Возращает скорость ветра по дату (только в течении 7 дней - текущий день и 6 следующих дней) 
+    
+    GetWindByHour(String placeName, LocalDate date, int hour)
+        --Возращает скорость ветра по часам (только в течении 24 часов с текушего часа) 
 
 
 **Пример:**
