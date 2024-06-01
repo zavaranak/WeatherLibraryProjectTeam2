@@ -58,7 +58,7 @@ GetWindByHour(String placeName, LocalDate date, int hour)
     }
 }
 
-**Результат: **
+**Результат:**
             
             Test Library
             Daily Temperature : 8.2 Celcius Degree
