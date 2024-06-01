@@ -60,7 +60,11 @@ public class Library {
         try {
             this.forecaster = new Cloud(apiKey);
             String placeId = findPlaceId(forecaster, placeName);
+<<<<<<< Updated upstream
             if(placeId=="unknown"){
+=======
+            if (placeId == "unknown") {
+>>>>>>> Stashed changes
                 return "Can not find place";
             }
             String response = forecaster.getResponse("https://www.meteosource.com/api/v1/free/point", "place_id", placeId+"&sections=hourly");
