@@ -1,12 +1,12 @@
-Инструкция использование библиотека
+**Инструкция использование библиотека**
 
-Чтобы пользовать библиотекой, нужно:
+**Чтобы пользовать библиотекой, нужно:**
 1. Включить библиотку в свой проект/приложение через команда import com.example.weather.Library (класс)
 2. Создать новый объект Library c параметром ключа API из Metosource
     Пример: Library forecaster = new Library(apikey);
 3. Вызывать методы из cоздаемого объкета для достать данных о погоде
 
-Список методы из библиотки (Class Library):
+**Список методы из библиотки (Class Library):**
 
 GetTemperatureByDate(String placeName, LocalDate date)
 --Возвращает температура по дату (только в течении 7 дней - текущий день и 6 следующих дней) 
@@ -22,7 +22,7 @@ GetWindByHour(String placeName, LocalDate date, int hour)
 --Возращает скорость ветра по часам (только в течении 24 часов с текушего часа) 
 
 
-Пример:
+**Пример:**
 public class App {
     public static void main(String[] args) {
         String apiKey = "gyqo0sonhmcyjhlyh2mejjkypn14e38jappjg19h"; // APIKEY
@@ -57,7 +57,7 @@ public class App {
     }
 }
 
-Результат: 
+**Результат: **
             
             Test Library
             Daily Temperature : 8.2 Celcius Degree
